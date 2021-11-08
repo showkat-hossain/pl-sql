@@ -1,3 +1,4 @@
+/* Formatted on 11/8/2021 8:49:07 PM (QP5 v5.227.12220.39754) */
 /*  
             Session Queries
     For Oracle Apps & Oracle Database
@@ -37,3 +38,14 @@ SELECT sid,
        program,
        module
   FROM v$session;
+
+SELECT a.username us,
+       a.osuser os,
+       a.sid,
+       a.serial#
+  FROM v$session a, v$locked_object b, dba_objects c
+ WHERE     UPPER (c.object_name) = UPPER ('&tbl_name')
+       AND b.object_id = c.object_id
+       AND a.sid = b.session_id;
+
+ALTER SYSTEM KILL SESSION 'sid,serial#';
